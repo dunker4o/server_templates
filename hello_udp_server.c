@@ -46,7 +46,6 @@ int main(void){
 		for(i = 0; i < rlen; i++){
 			printf("%c", buffer[i]);
 		}
-		printf("\n");
 	}
 
 	// Close the socket

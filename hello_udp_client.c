@@ -11,12 +11,14 @@
 
 #define MAXLINE 1500
 #define PORT 31415
+#define MAXINPUT 12
 
 int main(void) {
 	int 				fd;
 	char 				buffer[MAXLINE];
-	char 				*hello = "Hello from the other side of the internet!";
+	char 				*hello = "Hello from the other side of the internet!\n";
 	struct sockaddr_in 	server_addr;
+	char 				str[MAXINPUT]; //Array for reading stdin input
 
 	// Create the socket
 	if((fd = socket(AF_INET, SOCK_DGRAM, 0)) == -1){
@@ -30,7 +32,10 @@ int main(void) {
 	server_addr.sin_addr.s_addr = INADDR_ANY; 
 
 	// Send data to the server
-	sendto(fd, (const char *)hello, strlen(hello), MSG_CONFIRM, (const struct sockaddr *) &server_addr, sizeof(server_addr));
+	while(fgets(str, MAXINPUT, stdin) != NULL){
+		sendto(fd, str, strlen(str), MSG_CONFIRM, (const struct sockaddr *) &server_addr, sizeof(server_addr));
+	}
+	
 	printf("Greeting has been sent :)\n");
 
 	// Close the socket
