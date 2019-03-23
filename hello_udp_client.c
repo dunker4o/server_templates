@@ -37,7 +37,7 @@ int main(int argc, char* argv[]) {
 	//Fillout the server information
 	server_addr.sin_family 		= AF_INET;
 	server_addr.sin_port 		= htons(PORT);
-	server_addr.sin_addr.s_addr = inet_addr("192.168.0.9"); 
+	server_addr.sin_addr.s_addr = inet_addr(destination); 
 
 	// Send data to the server
 	while(fgets(str, MAXINPUT, stdin) != NULL){
