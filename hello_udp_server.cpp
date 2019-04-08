@@ -1,10 +1,14 @@
 // Sample UDP server file
-
+#include <cstring>
 #include <arpa/inet.h>
 #include <sys/types.h>
 #include <sys/socket.h>
 #include <stdio.h>
 #include <unistd.h>
+
+//Needed for figuring out machine IP address as per https://www.includehelp.com/c-programs/get-ip-address-in-linux.aspx
+#include <sys/ioctl.h>
+#include <net/if.h>
 
 #define BUFFER_LENGTH 1500
 #define PORT 31415
@@ -20,6 +24,20 @@ int main(void){
 	// Needed for UDP connection as per https:linux.die.net/man/3/getaddrinfo
 	struct sockaddr_storage client_addr;
 	socklen_t 				client_addr_len;
+
+	// Determining local IP
+	char 			ip_address[15];
+	struct ifreq 	ifr;
+
+	fd = socket(AF_INET, SOCK_DGRAM, 0);
+	ifr.ifr_addr.sa_family = AF_INET;
+	memcpy(ifr.ifr_name, "wlan0", IFNAMSIZ-1);
+	ioctl(fd, SIOCGIFADDR, &ifr);
+	close(fd);
+
+	strcpy(ip_address,inet_ntoa(((struct sockaddr_in *)&ifr.ifr_addr)->sin_addr));
+	printf("Server IP Address is: %s\n", ip_address);
+
 
 	//Network IP discovery
 	int broadcast = 1;
