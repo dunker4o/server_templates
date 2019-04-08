@@ -39,7 +39,11 @@ int main(void){
     }
 
 	// Attempt to bind to port 31415
-	addr.sin_family 		= fd, (struct sockaddr *) &addr, sizeof(addr)) == -1) {
+	addr.sin_family 		= AF_INET;
+	addr.sin_port  			= htons(PORT);
+	addr.sin_addr.s_addr 	= INADDR_ANY;
+
+	if(bind(fd, (struct sockaddr *) &addr, sizeof(addr)) == -1) {
 		perror("Unable to bind to port 31415");
 		return 2;
 	}
