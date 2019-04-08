@@ -21,19 +21,25 @@ int main(void){
 	struct sockaddr_storage client_addr;
 	socklen_t 				client_addr_len;
 
-	// Create a UDP (SOCK_DGRAM) over IP socket
+	//Network IP discovery
+	int broadcast = 1;
+
+	// Create a UDP (SOCK_DGRAM) over IP scoket
 	fd = socket (AF_INET, SOCK_DGRAM, 0);
 	if(fd == -1){
 		perror("Unable to create socket.");
 		return 1;
 	}
 
-	// Attempt to bind to port 31415
-	addr.sin_family 		= AF_INET;
-	addr.sin_port  			= htons(PORT);
-	addr.sin_addr.s_addr 	= INADDR_ANY;
 
-	if(bind(fd, (struct sockaddr *) &addr, sizeof(addr)) == -1) {
+	if(setsockopt(fd,SOL_SOCKET,SO_BROADCAST,&broadcast,sizeof(broadcast)) < 0){
+        perror("Error in setting Broadcast option");
+        close(fd);
+        return 3;
+    }
+
+	// Attempt to bind to port 31415
+	addr.sin_family 		= fd, (struct sockaddr *) &addr, sizeof(addr)) == -1) {
 		perror("Unable to bind to port 31415");
 		return 2;
 	}
