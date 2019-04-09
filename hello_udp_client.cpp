@@ -16,7 +16,7 @@
 
 #define MAXLINE 1500
 #define PORT 31415
-#define MAXINPUT 12
+#define MAXINPUT 128
 
 
 int main(int argc, char* argv[]) {

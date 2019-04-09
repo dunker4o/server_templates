@@ -22,7 +22,7 @@ int main(void){
 	char 					buffer[BUFFER_LENGTH];
 	int 					flags = 0;
 	// Needed for UDP connection as per https:linux.die.net/man/3/getaddrinfo
-	struct sockaddr_storage client_addr;
+	struct sockaddr_in client_addr;
 	socklen_t 				client_addr_len;
 
 	// Determining local IP
@@ -71,6 +71,7 @@ int main(void){
 	client_addr_len = sizeof(struct sockaddr_storage);
 	while((rlen = recvfrom(fd, buffer, BUFFER_LENGTH, flags, (struct sockaddr *) &client_addr, &client_addr_len)) > 0){
 		int i;
+		printf("%s -> ", inet_ntoa(client_addr.sin_addr));
 		for(i = 0; i < rlen; i++){
 			printf("%c", buffer[i]);
 		}
